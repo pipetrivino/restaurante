@@ -1,19 +1,18 @@
 <?php
-require 'conexion.php'; // Conexión a MongoDB Atlas
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-$collection = $db->restaurante; //nombre de base de datos
+require 'conexion.php';
 
-// Obtener todos los documentos
-$documentos = $collection->find();
+$collection = $db->menu;
 
-// Convertir el cursor a un array y procesarlo
+$resultado = $collection->find();
+
 $datos = [];
-foreach ($documentos as $doc) {
-    $doc['_id'] = (string)$doc['_id']; // Convertir el ID a string para evitar errores en JSON
+foreach ($resultado as $doc) {
+    $doc['_id'] = (string)$doc['_id'];
     $datos[] = $doc;
 }
 
-// Enviar respuesta como JSON
 header('Content-Type: application/json');
 echo json_encode($datos);
-?>
