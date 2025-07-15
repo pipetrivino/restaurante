@@ -38,18 +38,26 @@ function toggleMenu() {
 
 function datos() {
 
-  fetch("https://dollartgallery.shop/api/api.php")
-  .then(response => response.json())
-  .then(data => {
-    console.log("Datos recibidos:", data);
-    // Aquí puedes construir la tabla o lo que necesites
-  })
-  .catch(error => {
-    console.error("Error al obtener los datos:", error);
-  });
+  fetch("https://dollartgallery.shop/api/inventario.php")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector("#tabla-inventario tbody");
 
-  alert("datos");
-  
-  
+        data.forEach(item => {
+          const fila = document.createElement("tr");
 
+          fila.innerHTML = `
+            <td>${item.nombre || ''}</td>
+            <td>${item.cantidad || ''}</td>
+            <td>${item.costo || ''}</td>
+          `;
+
+          tbody.appendChild(fila);
+        });
+      })
+      .catch(error => {
+        console.error("Error cargando inventario:", error);
+      });
 };
+
+datos();
