@@ -24,9 +24,9 @@ function toggleMenu() {
     menu.classList.toggle("active");
 };
 
-function datos() {
+function cargarProductos() {
 
-  fetch("https://dollartgallery.shop/api/api.php")
+  fetch("https://dollartgallery.shop/api/productos.php")
       .then(res => res.json())
       .then(data => {
         const tbody = document.querySelector("#tabla-inventario tbody");
