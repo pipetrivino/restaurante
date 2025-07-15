@@ -15,19 +15,7 @@ function componentesHTML() {
         el.innerHTML = `<p>Error cargando el archivo: ${err.message}</p>`;
       });
   });
-
-  fetch("../api/menu.php")
-    .then(res => res.json())
-    .then(productos => {
-      console.log(productos)
-      
-     
-    })
-    .catch(error => {
-      console.error("Error al cargar el menú:", error);
-    });
-
-    alert("termiando")
+    
 };
 componentesHTML();
 
