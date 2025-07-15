@@ -49,11 +49,11 @@ document.getElementById('formProducto').addEventListener('submit', function(e) {
 
   const producto = {
     nombre: document.getElementById('nombre').value,
-    precio: parseFloat(document.getElementById('precio').value),
+    costo: parseFloat(document.getElementById('costo').value),
     cantidad: parseInt(document.getElementById('cantidad').value)
   };
 
-  fetch('https://dollartgallery.shop/api/insertar.php', {
+  fetch('https://dollartgallery.shop/api/insertarproducto.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
