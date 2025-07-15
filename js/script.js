@@ -15,6 +15,19 @@ function componentesHTML() {
         el.innerHTML = `<p>Error cargando el archivo: ${err.message}</p>`;
       });
   });
+
+  fetch("../api/menu.php")
+    .then(res => res.json())
+    .then(productos => {
+      console.log(productos)
+      
+     
+    })
+    .catch(error => {
+      console.error("Error al cargar el menú:", error);
+    });
+
+    alert("termiando")
 };
 
 componentesHTML();
@@ -24,9 +37,8 @@ function toggleMenu() {
     menu.classList.toggle("active");
 };
 
-
 document.addEventListener("DOMContentLoaded", function () {
-  alert("hola");
+  
   fetch("../api/menu.php")
     .then(res => res.json())
     .then(productos => {
@@ -38,11 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
         nombre.textContent = prod.nombre;
 
         const precio = document.createElement("td");
-        precio.textContent = `$${prod.precio.toLocaleString("es-CO")}`;
+        nombre.textContent = prod.costo;
 
         const estado = document.createElement("td");
-        estado.textContent = prod.disponible ? "Disponible" : "Agotado";
-        estado.className = prod.disponible ? "disponible" : "no-disponible";
+        nombre.textContent = prod.cantidad;
+
+        
 
         fila.appendChild(nombre);
         fila.appendChild(precio);
