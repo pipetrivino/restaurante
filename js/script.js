@@ -26,6 +26,7 @@ function toggleMenu() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  alert("hola");
   fetch("../api/menu.php")
     .then(res => res.json())
     .then(productos => {
