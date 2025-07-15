@@ -6,7 +6,7 @@
 
 /* Estilos básicos del navbar */
 .nav-principal {
-  background-color: #cf4545;
+  background-color:green;
   color: white;
   display: flex;
   justify-content: space-between;
