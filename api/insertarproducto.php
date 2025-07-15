@@ -12,7 +12,7 @@ $collection = $client->restaurante->producto;
 
 // Leer datos JSON enviados por POST
 $data = json_decode(file_get_contents("php://input"), true);
-
+console.log($data);
 if (!$data || !isset($data['nombre']) || !isset($data['cantidad']) || !isset($data['costo'])) {
     http_response_code(400);
     echo json_encode(['error' => 'Datos incompletos']);
