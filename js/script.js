@@ -48,4 +48,4 @@ function cargarProductos() {
       });
 };
 
-datos();
+cargarProductos();
