@@ -38,7 +38,7 @@ function toggleMenu() {
 
 function datos() {
 
-  fetch("https://dollartgallery.shop/api/inventario.php")
+  fetch("https://dollartgallery.shop/api/api.php")
       .then(res => res.json())
       .then(data => {
         const tbody = document.querySelector("#tabla-inventario tbody");
