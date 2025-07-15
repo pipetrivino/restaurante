@@ -29,7 +29,6 @@ function componentesHTML() {
 
     alert("termiando")
 };
-
 componentesHTML();
 
 function toggleMenu() {
@@ -37,33 +36,20 @@ function toggleMenu() {
     menu.classList.toggle("active");
 };
 
-document.addEventListener("DOMContentLoaded", function () {
+function datos() {
+
+  fetch("https://dollartgallery.shop/api/api.php")
+  .then(response => response.json())
+  .then(data => {
+    console.log("Datos recibidos:", data);
+    // Aquí puedes construir la tabla o lo que necesites
+  })
+  .catch(error => {
+    console.error("Error al obtener los datos:", error);
+  });
+
+  alert("datos");
   
-  fetch("../api/menu.php")
-    .then(res => res.json())
-    .then(productos => {
-      const tbody = document.querySelector("#tabla-productos tbody");
-      productos.forEach(prod => {
-        const fila = document.createElement("tr");
+  
 
-        const nombre = document.createElement("td");
-        nombre.textContent = prod.nombre;
-
-        const precio = document.createElement("td");
-        nombre.textContent = prod.costo;
-
-        const estado = document.createElement("td");
-        nombre.textContent = prod.cantidad;
-
-        
-
-        fila.appendChild(nombre);
-        fila.appendChild(precio);
-        fila.appendChild(estado);
-        tbody.appendChild(fila);
-      });
-    })
-    .catch(error => {
-      console.error("Error al cargar el menú:", error);
-    });
-});
+};

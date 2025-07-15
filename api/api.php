@@ -1,23 +1,19 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
+require 'conexion.php'; // Conexión a MongoDB Atlas
 
-use MongoDB\Client;
+$collection = $db->restaurante; //nombre de base de datos
 
-// URI de conexión (puedes mover la contraseña a una variable de entorno si lo vas a hacer más seguro)
-$uri = 'mongodb+srv://pipe:pipe@clusterrestaurante.o6ivt52.mongodb.net/?retryWrites=true&w=majority&appName=Clusterrestaurante';
+// Obtener todos los documentos
+$documentos = $collection->find();
 
-$client = new Client($uri);
-
-// Selecciona base de datos y colección
-$db = $client->restaurante; // nombre de tu base de datos
-$collection = $db->producto;    // nombre de tu colección (puedes cambiarlo)
-
-try {
-    $documentos = $collection->find()->toArray();
-
-    header('Content-Type: application/json');
-    echo json_encode($documentos);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+// Convertir el cursor a un array y procesarlo
+$datos = [];
+foreach ($documentos as $doc) {
+    $doc['_id'] = (string)$doc['_id']; // Convertir el ID a string para evitar errores en JSON
+    $datos[] = $doc;
 }
+
+// Enviar respuesta como JSON
+header('Content-Type: application/json');
+echo json_encode($datos);
+?>
