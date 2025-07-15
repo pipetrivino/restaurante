@@ -24,150 +24,54 @@
     </tbody>
   </table>
 
+  <h2>Agregar nuevo producto</h2>
+<form id="formProducto">
+  <label>Nombre:</label><br>
+  <input type="text" id="nombre" required><br><br>
 
-  <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="fw-bold">Inventario</h1>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#productoModal" onclick="abrirModalAgregar()">
-        + Agregar Producto
-      </button>
-    </div>
+  <label>cantidad:</label><br>
+  <input type="text" id="cantidad" required><br><br>
 
-    <table class="table table-hover table-bordered bg-white">
-      <thead class="table-dark">
-        <tr>
-          <th>Nombre</th>
-          <th>Precio</th>
-          <th>Stock</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-productos"></tbody>
-    </table>
-  </div>
+  <label>costo:</label><br>
+  <input type="text" id="costo" required><br><br>
 
-  <!-- Modal -->
-  <div class="modal fade" id="productoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="formProducto">
-          <div class="modal-header">
-            <h5 class="modal-title">Agregar Producto</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="productoId">
-            <div class="mb-3">
-              <label class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="nombre" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">cantidad</label>
-              <input type="string" class="form-control" id="cantidad" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">costo</label>
-              <input type="string" class="form-control" id="costo" required>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <button type="submit">Agregar Producto</button>
+</form>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const API_URL = 'https://dollartgallery.shop/api/productos.php';
+<div id="mensaje"></div>
 
-    const form = document.getElementById('formProducto');
-    const tabla = document.getElementById('tabla-productos');
-    const modal = new bootstrap.Modal(document.getElementById('productoModal'));
-
-    let editando = false;
-
-    function cargarProductos() {
-      fetch(API_URL)
-        .then(res => res.json())
-        .then(data => {
-          tabla.innerHTML = '';
-          data.forEach(p => {
-            tabla.innerHTML += `
-              <tr>
-                <td>${p.nombre}</td>
-                <td>${p.cantidad}</td>
-                <td>${p.costo}</td>
-                <td>
-                  <button class="btn btn-sm btn-warning" onclick='abrirModalEditar(${JSON.stringify(p)})'>Editar</button>
-                  <button class="btn btn-sm btn-danger" onclick="eliminarProducto('${p._id.$oid}')">Eliminar</button>
-                </td>
-              </tr>
-            `;
-          });
-        });
-    }
-
-    function abrirModalAgregar() {
-      editando = false;
-      form.reset();
-      document.querySelector('.modal-title').textContent = 'Agregar Producto';
-    }
-
-    function abrirModalEditar(p) {
-      editando = true;
-      document.getElementById('productoId').value = p._id.$oid;
-      document.getElementById('nombre').value = p.nombre;
-      document.getElementById('cantidad').value = p.cantidad;
-      document.getElementById('costo').value = p.costo;
-      document.querySelector('.modal-title').textContent = 'Editar Producto';
-      modal.show();
-    }
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const producto = {
-        nombre: form.nombre.value,
-        precio: parseFloat(form.cantidad.value),
-        stock: parseInt(form.costo.value)
-      };
-
-      if (editando) {
-        producto._id = document.getElementById('productoId').value;
-        fetch(API_URL, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(producto)
-        }).then(() => {
-          modal.hide();
-          cargarProductos();
-        });
-      } else {
-        fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(producto)
-        }).then(() => {
-          modal.hide();
-          cargarProductos();
-        });
-      }
-    });
-
-    function eliminarProducto(id) {
-      if (!confirm('¿Seguro que deseas eliminar este producto?')) return;
-      fetch(API_URL, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ _id: id })
-      }).then(() => cargarProductos());
-    }
-
-  </script>
 
   <script src="js/script.js"></script>
   
+  <script>
+document.getElementById('formProducto').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const producto = {
+    nombre: document.getElementById('nombre').value,
+    precio: parseFloat(document.getElementById('precio').value),
+    cantidad: parseInt(document.getElementById('cantidad').value)
+  };
+
+  fetch('https://dollartgallery.shop/api/insertar.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(producto)
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('mensaje').innerText = data.mensaje || 'Error';
+    document.getElementById('formProducto').reset();
+  })
+  .catch(err => {
+    console.error('Error:', err);
+    document.getElementById('mensaje').innerText = 'Error al conectar con el servidor';
+  });
+});
+</script>
+
 
 </body>
 </html>
