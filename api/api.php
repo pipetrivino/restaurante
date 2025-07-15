@@ -4,7 +4,7 @@ require __DIR__ . '/vendor/autoload.php';
 use MongoDB\Client;
 
 // URI de conexión (puedes mover la contraseña a una variable de entorno si lo vas a hacer más seguro)
-$env = parse_ini_file(__DIR__ . '/.env');
+$env = parse_ini_file(__DIR__ . '/config.env');
 $uri = $env['MONGODB_URI']
 
 $client = new Client($uri);
