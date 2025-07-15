@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos básicos del navbar */
+.nav-principal {
+  background-color: #cf4545;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav-principal .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-principal .menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-principal .menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.nav-principal .menu a:hover {
+  background-color: #444;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-principal {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-principal .menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .nav-principal .menu.active {
+    display: flex;
+  }
+
+  .nav-principal .menu a {
+    padding: 0.5rem 0;
+  }
+}
