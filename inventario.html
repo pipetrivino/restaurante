@@ -86,7 +86,7 @@
     <thead>
       <tr>
         <th>Nombre</th>
-        <th>Precio</th>
+        <th>costo</th>
         <th>Cantidad</th>
         <th>Acciones</th>
       </tr>
@@ -99,7 +99,7 @@
     <div class="modal-content">
       <h2 id="modal-titulo">Agregar Producto</h2>
       <input type="text" id="nombre" placeholder="Nombre del producto" />
-      <input type="number" id="precio" placeholder="Precio" />
+      <input type="costo" id="costo" placeholder="Precio" />
       <input type="number" id="cantidad" placeholder="Cantidad" />
       <input type="hidden" id="producto-id" />
       <button onclick="guardarProducto()">Guardar</button>
@@ -155,11 +155,10 @@
 
     function guardarProducto() {
       const nombre = document.getElementById("nombre").value;
-      const precio = parseFloat(document.getElementById("precio").value);
-      const cantidad = parseInt(document.getElementById("cantidad").value);
-      const id = document.getElementById("producto-id").value;
+      const costo = document.getElementById("costo").value;
+      const cantidad = document.getElementById("cantidad").value;
 
-      const datos = { nombre, precio, cantidad };
+      const datos = { nombre, costo, cantidad };
 
       const metodo = id ? "PUT" : "POST";
       if (id) datos._id = id;
@@ -183,7 +182,7 @@
 
       document.getElementById("modal-titulo").innerText = "Editar Producto";
       document.getElementById("nombre").value = producto.nombre;
-      document.getElementById("precio").value = producto.precio;
+      document.getElementById("costo").value = producto.costo;
       document.getElementById("cantidad").value = producto.cantidad;
       document.getElementById("producto-id").value = id;
       document.getElementById("modal").classList.add("active");
