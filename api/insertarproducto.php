@@ -1,30 +1,37 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-
 use MongoDB\Client;
 
-// Conexión directa sin .env por ahora
-$uri = 'mongodb+srv://pipe:pipe@clusterrestaurante.o6ivt52.mongodb.net/?retryWrites=true&w=majority&appName=Clusterrestaurante';
+header('Content-Type: application/json'); // Asegura JSON en cualquier respuesta
 
-$client = new Client($uri);
+try {
+    $uri = 'mongodb+srv://pipe:pipe@clusterrestaurante.o6ivt52.mongodb.net/?retryWrites=true&w=majority&appName=Clusterrestaurante';
 
-$collection = $client->restaurante->producto;
+    $client = new Client($uri);
+    $collection = $client->restaurante->producto;
 
-// Leer datos JSON enviados por POST
-$data = json_decode(file_get_contents("php://input"), true);
-console.log($data);
-if (!$data || !isset($data['nombre']) || !isset($data['cantidad']) || !isset($data['costo'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Datos incompletos']);
-    exit;
+    // Obtener datos JSON del cuerpo del POST
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!$data || !isset($data['nombre']) || !isset($data['costo']) || !isset($data['cantidad'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Datos incompletos o mal formateados']);
+        exit;
+    }
+
+    $insertado = $collection->insertOne([
+        'nombre' => $data['nombre'],
+        'costo' => $data['costo'],
+        'cantidad' => $data['cantidad'],
+        'fecha' => date('Y-m-d H:i:s')
+    ]);
+
+    echo json_encode([
+        'mensaje' => 'Producto insertado correctamente',
+        'id' => (string)$insertado->getInsertedId()
+    ]);
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Error interno: ' . $e->getMessage()]);
 }
-
-// Insertar en MongoDB
-$result = $collection->insertOne([
-    'nombre' => $data['nombre'],
-    'cantidad' => (float)$data['cantidad'],
-    'costo' => (int)$data['costo'],
-    'fecha' => date('Y-m-d H:i:s')
-]);
-
-echo json_encode(['mensaje' => 'Producto agregado', 'id' => (string)$result->getInsertedId()]);
