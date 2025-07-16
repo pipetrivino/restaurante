@@ -23,7 +23,6 @@ try {
         'nombre' => $data['nombre'],
         'costo' => $data['costo'],
         'cantidad' => $data['cantidad'],
-        'fecha' => date('Y-m-d H:i:s')
     ]);
 
     echo json_encode([
