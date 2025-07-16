@@ -29,7 +29,7 @@ try {
 
         $result = $collection->insertOne([
             'nombre' => $data['nombre'],
-            'costo' => $data['precio'],
+            'costo' => $data['costo'],
             'cantidad' => $data['cantidad']
         ]);
 
