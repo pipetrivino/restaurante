@@ -50,7 +50,7 @@ function cargarProductos() {
 
 cargarProductos();
 
-document.getElementById('formProducto').addEventListener('submit', function(e) {
+function agregarProducto(e) {
   e.preventDefault();
 
   const producto = {
@@ -77,4 +77,4 @@ document.getElementById('formProducto').addEventListener('submit', function(e) {
     console.error('Error:', err);
     document.getElementById('mensaje').innerText = 'Error al conectar con el servidor';
   });
-});
+};
