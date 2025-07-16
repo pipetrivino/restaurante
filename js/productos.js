@@ -45,17 +45,13 @@ function renderizarTabla() {
 
 function guardarProducto() {
   const nombre = document.getElementById("nombre").value;
-  const precio = document.getElementById("precio").value;
+  const costo = document.getElementById("costo").value;
   const cantidad = document.getElementById("cantidad").value;
-  const id = document.getElementById("producto-id").value;
 
-  const datos = { nombre, precio, cantidad };
-
-  const metodo = id ? "PUT" : "POST";
-  if (id) datos._id = id;
+  const datos = { nombre, costo, cantidad };
 
   fetch(API_URL, {
-    method: metodo,
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos)
   })
