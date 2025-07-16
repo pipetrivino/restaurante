@@ -15,66 +15,43 @@ function componentesHTML() {
         el.innerHTML = `<p>Error cargando el archivo: ${err.message}</p>`;
       });
   });
-    
+
 };
 componentesHTML();
 
 function toggleMenu() {
-    const menu = document.getElementById("nav-menu");
-    menu.classList.toggle("active");
+  const menu = document.getElementById("nav-menu");
+  menu.classList.toggle("active");
 };
+
+const API_URL = "https://dollartgallery.shop/api/productos.php";
+let productos = [];
 
 function cargarProductos() {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
+      productos = data;
+      renderizarTabla();
+    })
+    .catch(err => console.error("Error cargando productos:", err));
+}
 
-  fetch("https://dollartgallery.shop/api/productos.php")
-      .then(res => res.json())
-      .then(data => {
-        const tbody = document.querySelector("#tabla-inventario tbody");
+function renderizarTabla() {
+  const tbody = document.querySelector("#tabla-productos tbody");
+  tbody.innerHTML = "";
 
-        data.forEach(item => {
-          const fila = document.createElement("tr");
-
-          fila.innerHTML = `
-            <td>${item.nombre || ''}</td>
-            <td>${item.cantidad || ''}</td>
-            <td>${item.costo || ''}</td>
-          `;
-
-          tbody.appendChild(fila);
-        });
-      })
-      .catch(error => {
-        console.error("Error cargando inventario:", error);
-      });
-};
-
-cargarProductos();
-
-function agregarProducto(e) {
-  e.preventDefault();
-
-  const producto = {
-    nombre: document.getElementById('nombre').value,
-    costo: document.getElementById('costo').value,
-    cantidad: document.getElementById('cantidad').value
-  };
-
-  console.log(producto);
-
-  fetch('https://dollartgallery.shop/api/insertarproducto.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(producto)
-  })
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('mensaje').innerText = data.mensaje || 'Error';
-    document.getElementById('formProducto').reset();
-  })
-  .catch(err => {
-    console.error('Error:', err);
-    document.getElementById('mensaje').innerText = 'Error al conectar con el servidor';
+  productos.forEach(p => {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+          <td>${p.nombre}</td>
+          <td>${p.precio}</td>
+          <td>${p.cantidad}</td>
+          <td>
+            <button class="editar-btn" onclick="editarProducto('${p._id.$oid}')">Editar</button>
+            <button class="eliminar-btn" onclick="eliminarProducto('${p._id.$oid}')">Eliminar</button>
+          </td>
+        `;
+    tbody.appendChild(fila);
   });
-};
+}
