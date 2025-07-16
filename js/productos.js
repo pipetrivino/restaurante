@@ -1,6 +1,19 @@
 const API_URL = "https://dollartgallery.shop/api/productos.php";
 let productos = [];
 
+function abrirModal() {
+  document.getElementById("modal").classList.add("active");
+  document.getElementById("modal-titulo").innerText = "Agregar Producto";
+  document.getElementById("nombre").value = "";
+  document.getElementById("precio").value = "";
+  document.getElementById("cantidad").value = "";
+  document.getElementById("producto-id").value = "";
+}
+
+function cerrarModal() {
+  document.getElementById("modal").classList.remove("active");
+}
+
 function cargarProductos() {
   fetch(API_URL)
     .then(res => res.json())
@@ -19,7 +32,7 @@ function renderizarTabla() {
     const fila = document.createElement("tr");
     fila.innerHTML = `
           <td>${p.nombre}</td>
-          <td>${p.precio}</td>
+          <td>${p.costo}</td>
           <td>${p.cantidad}</td>
           <td>
             <button class="editar-btn" onclick="editarProducto('${p._id.$oid}')">Editar</button>
@@ -30,23 +43,10 @@ function renderizarTabla() {
   });
 }
 
-function abrirModal() {
-  document.getElementById("modal").classList.add("active");
-  document.getElementById("modal-titulo").innerText = "Agregar Producto";
-  document.getElementById("nombre").value = "";
-  document.getElementById("precio").value = "";
-  document.getElementById("cantidad").value = "";
-  document.getElementById("producto-id").value = "";
-}
-
-function cerrarModal() {
-  document.getElementById("modal").classList.remove("active");
-}
-
 function guardarProducto() {
   const nombre = document.getElementById("nombre").value;
-  const precio = parseFloat(document.getElementById("precio").value);
-  const cantidad = parseInt(document.getElementById("cantidad").value);
+  const precio = document.getElementById("precio").value;
+  const cantidad = document.getElementById("cantidad").value;
   const id = document.getElementById("producto-id").value;
 
   const datos = { nombre, precio, cantidad };

@@ -21,7 +21,7 @@ try {
     if ($method === 'POST') {
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (!$data || !isset($data['nombre'], $data['precio'], $data['cantidad'])) {
+        if (!$data || !isset($data['nombre'], $data['costo'], $data['cantidad'])) {
             http_response_code(400);
             echo json_encode(['error' => 'Datos incompletos']);
             exit;
@@ -29,9 +29,8 @@ try {
 
         $result = $collection->insertOne([
             'nombre' => $data['nombre'],
-            'precio' => (float)$data['precio'],
-            'cantidad' => (int)$data['cantidad'],
-            'fecha' => date('Y-m-d H:i:s')
+            'costo' => $data['precio'],
+            'cantidad' => $data['cantidad']
         ]);
 
         echo json_encode(['mensaje' => 'Producto insertado', 'id' => (string)$result->getInsertedId()]);
