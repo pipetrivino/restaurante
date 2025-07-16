@@ -49,3 +49,32 @@ function cargarProductos() {
 };
 
 cargarProductos();
+
+document.getElementById('formProducto').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const producto = {
+    nombre: document.getElementById('nombre').value,
+    costo: document.getElementById('costo').value,
+    cantidad: document.getElementById('cantidad').value
+  };
+
+  console.log(producto);
+
+  fetch('https://dollartgallery.shop/api/insertarproducto.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(producto)
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('mensaje').innerText = data.mensaje || 'Error';
+    document.getElementById('formProducto').reset();
+  })
+  .catch(err => {
+    console.error('Error:', err);
+    document.getElementById('mensaje').innerText = 'Error al conectar con el servidor';
+  });
+});
